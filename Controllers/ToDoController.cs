@@ -25,8 +25,11 @@ namespace TodoAPI.Controllers
                 _context.SaveChanges();
             }
         }
+
+        //The[HttpGet] attribute denotes a method that responds to an HTTP GET request.The URL path for each method is constructed as follows:
+
         // GET: api/Todo
-        [HttpGet]
+       [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
             return await _context.TodoItems.ToListAsync();
@@ -44,6 +47,15 @@ namespace TodoAPI.Controllers
             }
 
             return todoItem;
+        }
+        // POST: api/Todo
+        [HttpPost]
+        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item)
+        {
+            _context.TodoItems.Add(item);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetTodoItem), new { id = item.Id }, item);
         }
     }
 }
